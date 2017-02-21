@@ -16,26 +16,26 @@ realAm = mean(Am(1:3));
 %varrealAm = sum((Am(1:3) - realAm).^2)/3;
 %sigma = sqrt(varrealAm);
 %% an example
-% figure(1);
-% 
-% [centerDis, centerAzi, centerV] = centerOfMass(R, AZI, V, Am);
-% [new2Dis, new2Azi] = group2Estimation(R, AZI, Am);
-% [newDis, newAzi, aveVel] = groupEstimation(R, AZI, V, Am);
-% plot(R,AZI, '*');
-% xlabel('距离R/m');
-% ylabel('角度\theta/\circ');
-% axis([88.5 102.5 9.5 11.5]);
-% hold on;
-% plot(centerDis, centerAzi, '^');
-% hold on;
-% plot(new2Dis, new2Azi, 'ro');
-% hold on;
-% plot(newDis, newAzi, 'rh');
-% legend('原始点迹','质心法','二维加权算法', '三维加权算法');
+figure(1);
+
+[centerDis, centerAzi, centerV] = centerOfMass(R, AZI, V, Am);
+[new2Dis, new2Azi] = group2Estimation(R, AZI, Am);
+[newDis, newAzi, aveVel] = groupEstimation(R, AZI, V, Am);
+plot(R,AZI, '*');
+xlabel('距离R/m');
+ylabel('角度\theta/\circ');
+axis([88.5 102.5 9.5 11.5]);
+hold on;
+plot(centerDis, centerAzi, '^');
+hold on;
+plot(new2Dis, new2Azi, 'ro');
+hold on;
+plot(newDis, newAzi, 'rh');
+legend('原始点迹','质心法','二维加权算法', '三维加权算法');
 
 
 %% amplitutde variation
-deltaA = -200:40:300;
+deltaA = -200:15:300;
 deltaAngleCenter = zeros(1,length(deltaA));
 deltaAnglenew2 = zeros(1,length(deltaA));
 deltaAnglenew = zeros(1,length(deltaA));
@@ -50,14 +50,14 @@ for i = 1:length(deltaA)
     [centerDis, centerAzi, centerV] = centerOfMass(R, AZI, V, Am1);
     [new2Dis, new2Azi] = group2Estimation(R, AZI, Am1);
     [newDis, newAzi, newV] = groupEstimation(R, AZI, V, Am1);
-    deltaAngleCenter(i) = centerAzi - realAZI;
-    deltaAnglenew2(i) = new2Azi - realAZI;
-    deltaAnglenew(i) = newAzi - realAZI;
-    deltaRCenter(i) = centerDis - realR;
-    deltaRnew2(i) = new2Dis - realR;
-    deltaRnew(i) = newDis - realR;
-    deltaVCenter(i) = centerV - realV;
-    deltaVnew(i) = newV - realV;
+    deltaAngleCenter(i) = abs(centerAzi - realAZI);
+    deltaAnglenew2(i) = abs(new2Azi - realAZI);
+    deltaAnglenew(i) = abs(newAzi - realAZI);
+    deltaRCenter(i) = abs(centerDis - realR);
+    deltaRnew2(i) = abs(new2Dis - realR);
+    deltaRnew(i) = abs(newDis - realR);
+    deltaVCenter(i) = abs(centerV - realV);
+    deltaVnew(i) = abs(newV - realV);
 end
 figure(2)
 plot(deltaA, deltaAngleCenter, '-^');
@@ -86,7 +86,7 @@ ylabel('\Delta V(m/s)');
 legend('质心法', '三维加权算法');
 
 %% Azimuth Variation
-deltaAZI = -5:0.4:5;
+deltaAZI = -5:0.2:5;
 deltaAngleCenter = zeros(1,length(deltaAZI));
 deltaAnglenew2 = zeros(1,length(deltaAZI));
 deltaAnglenew = zeros(1,length(deltaAZI));
@@ -101,14 +101,14 @@ for i = 1:length(deltaAZI)
     [centerDis, centerAzi, centerV] = centerOfMass(R, AZI1, V, Am);
     [new2Dis, new2Azi] = group2Estimation(R, AZI1, Am);
     [newDis, newAzi, newV] = groupEstimation(R, AZI1, V, Am);
-    deltaAngleCenter(i) = centerAzi - realAZI;
-    deltaAnglenew2(i) = new2Azi - realAZI;
-    deltaAnglenew(i) = newAzi - realAZI;
-    deltaRCenter(i) = centerDis - realR;
-    deltaRnew2(i) = new2Dis - realR;
-    deltaRnew(i) = newDis - realR;
-    deltaVCenter(i) = centerV - realV;
-    deltaVnew(i) = newV - realV;
+    deltaAngleCenter(i) = abs(centerAzi - realAZI);
+    deltaAnglenew2(i) = abs(new2Azi - realAZI);
+    deltaAnglenew(i) = abs(newAzi - realAZI);
+    deltaRCenter(i) = abs(centerDis - realR);
+    deltaRnew2(i) = abs(new2Dis - realR);
+    deltaRnew(i) = abs(newDis - realR);
+    deltaVCenter(i) = abs(centerV - realV);
+    deltaVnew(i) = abs(newV - realV);
 end
 figure(5)
 plot(deltaAZI, deltaAngleCenter, '-^');
@@ -133,5 +133,56 @@ plot(deltaAZI, deltaVCenter, '-*');
 hold on;
 plot(deltaAZI, deltaVnew, '-ro');
 xlabel('\Delta \theta_{1}');
+ylabel('\Delta V(m/s)');
+legend('质心法', '三维加权算法');
+
+%% range variation
+deltaR = -10:0.4:10;
+deltaAngleCenter = zeros(1,length(deltaR));
+deltaAnglenew2 = zeros(1,length(deltaR));
+deltaAnglenew = zeros(1,length(deltaR));
+deltaRCenter = zeros(1,length(deltaR));
+deltaRnew2 = zeros(1,length(deltaR));
+deltaRnew = zeros(1,length(deltaR));
+deltaVCenter = zeros(1, length(deltaR));
+deltaVnew = zeros(1, length(deltaR));
+for i = 1:length(deltaR)
+    R1 = R;
+    R1(end) = R1(end) + deltaR(i);
+    [centerDis, centerAzi, centerV] = centerOfMass(R1, AZI, V, Am);
+    [new2Dis, new2Azi] = group2Estimation(R1, AZI, Am);
+    [newDis, newAzi, newV] = groupEstimation(R1, AZI, V, Am);
+    deltaAngleCenter(i) = abs(centerAzi - realAZI);
+    deltaAnglenew2(i) = abs(new2Azi - realAZI);
+    deltaAnglenew(i) = abs(newAzi - realAZI);
+    deltaRCenter(i) = abs(centerDis - realR);
+    deltaRnew2(i) = abs(new2Dis - realR);
+    deltaRnew(i) = abs(newDis - realR);
+    deltaVCenter(i) = abs(centerV - realV);
+    deltaVnew(i) = abs(newV - realV);
+end
+figure(8)
+plot(deltaR, deltaAngleCenter, '-^');
+hold on;
+plot(deltaR, deltaAnglenew2, '-*');
+hold on;
+plot(deltaR, deltaAnglenew, '-ro');
+xlabel('\Delta R_{1}');
+ylabel('\Delta \theta(\circ)');
+legend('质心法', '二维加权算法', '三维加权算法');
+figure(9)
+plot(deltaR, deltaRCenter, '-^');
+hold on;
+plot(deltaR, deltaRnew2, '-*');
+hold on;
+plot(deltaR, deltaRnew, '-ro');
+xlabel('\Delta R_{1}');
+ylabel('\Delta R(m)');
+legend('质心法', '二维加权算法', '三维加权算法');
+figure(10)
+plot(deltaR, deltaVCenter, '-*');
+hold on;
+plot(deltaR, deltaVnew, '-ro');
+xlabel('\Delta R_{1}');
 ylabel('\Delta V(m/s)');
 legend('质心法', '三维加权算法');

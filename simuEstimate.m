@@ -17,7 +17,6 @@ realAm = mean(Am(1:3));
 %sigma = sqrt(varrealAm);
 %% an example
 figure(1);
-
 [centerDis, centerAzi, centerV] = centerOfMass(R, AZI, V, Am);
 [new2Dis, new2Azi] = group2Estimation(R, AZI, Am);
 [newDis, newAzi, aveVel] = groupEstimation(R, AZI, V, Am);
@@ -32,7 +31,6 @@ plot(new2Dis, new2Azi, 'ro');
 hold on;
 plot(newDis, newAzi, 'rh');
 legend('原始点迹','质心法','二维加权算法', '三维加权算法');
-
 
 %% amplitutde variation
 deltaA = -200:15:300;

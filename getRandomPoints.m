@@ -11,11 +11,11 @@ aminit = [];
 aziradius = fix(radius/R*180/pi/2);
 for i = R - radius:deltaR: R + radius
     for j = AZI - aziradius:deltaAZI: AZI + aziradius
-        flag = randi([0 1]);
+        flag = 1;
         if flag == 1
             rinit = [rinit; i];
             aziinit = [aziinit; j];
-            vinit = [vinit; V + randi([-2 2])];
+            vinit = [vinit; V + randi([-1 1])];
             aminit = [aminit; AM + randi([-10 10])];
         end
     end

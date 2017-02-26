@@ -3,9 +3,15 @@ azigroup = sortrows(azigroup, 1);
 group = {[azigroup(1,:)]};
 if size(azigroup,1) > 1
     for i = 2:size(azigroup,1)
-        if azigroup(i,1) - azigroup(i-1,1) <= resolutionR && abs(azigroup(i,3) - azigroup(i-1,3)) < deltafd && abs(azigroup(i,4) - azigroup(i-1,4)) < deltaA
-            group{end} = [group{end}; azigroup(i,:)];
-        else
+        flag = 0;
+        for j = 1:length(group)
+            if azigroup(i,1) - group{j}(end,1) <= resolutionR && abs(azigroup(i,3) - group{j}(end,3)) <= deltafd && abs(azigroup(i,4) - group{j}(end, 4)) <= deltaA
+                group{j} = [group{j}; azigroup(i,:)];
+                flag = 1;
+                break;
+            end
+        end
+        if flag == 0
             group = [group [azigroup(i,:)]];
         end
     end

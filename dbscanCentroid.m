@@ -1,4 +1,4 @@
-function combineGroup = dbscanCentroid(data, AM_init)
+function [combineGroup, objectCell, object] = dbscanCentroid(data, AM_init, deltaR, deltaAZI)
 disDoor = 1;
 aziDoor = 1;
 vDoor = 2;
@@ -21,15 +21,42 @@ else
     objectCell = [];
     clusternum = 0;
 end
+deltaam = 20;
+object = {};
+for i = 1:clusternum
+    group = {objectCell{i}(1,:)};
+    if size(objectCell{i},1) > 1
+        for k = 2:size(objectCell{i},1)
+            flag = 0;
+            for j = 1:length(group)
+                if abs(objectCell{i}(k, 4) - group{j}(end, 4)) <= deltaam
+                    group{j} = [group{j}; objectCell{i}(k, :)];
+                    flag = 1;
+                    break;
+                end
+            end
+            if flag == 0
+                group = [group objectCell{i}(k, :)];
+            end
+        end
+    end
+    object = [object group];
+end
 
 combineGroup = [];
-for j = 1:clusternum
-    cludis = objectCell{j}(:,1);%取簇中的距离维
-    cluazi = objectCell{j}(:,2);%取簇中的方位向
-    cluv = objectCell{j}(:,3);%去簇中的速度维
-    cluam = objectCell{j}(:,4);
+for j = 1:length(object)
+    cludis = object{j}(:,1);%取簇中的距离维
+    cluazi = object{j}(:,2);%取簇中的方位向
+    cluv = object{j}(:,3);%去簇中的速度维
+    cluam = object{j}(:,4);
     clusterDis = max(cludis) - min(cludis);
     clusterAzi = max(cluazi) - min(cluazi);
+    if clusterDis == 0 
+      clusterDis = deltaR;
+    end
+    if clusterAzi == 0
+       clusterAzi = deltaAZI; 
+    end
     [centerDis, centerAzi, centerV] = centerOfMass(cludis, cluazi, cluv, cluam);
     combineGroup = [combineGroup; centerDis centerAzi centerV mean(cluam) clusterDis clusterAzi];
 end

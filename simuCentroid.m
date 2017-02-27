@@ -2,7 +2,9 @@ clc
 clear
 close all;
 %load('config.mat');
-[R_init, AZI_init, V_init, AM_init, objectSizeinfo] = getRandomInitObject(4, 100, 90, 1, 1);
+deltaR = 1;
+deltaAZI = 1;
+[R_init, AZI_init, V_init, AM_init, objectSizeinfo] = getRandomInitObject(7, 100, 90,deltaR, deltaAZI);
 data = [R_init AZI_init V_init];
 % resolutionR = 1;
 % resolutionAzi = 1;
@@ -14,7 +16,7 @@ axis([0 100 0 100]);
 ylabel('距离/m');
 xlabel('方位角/度');
 %% 密度聚类方法
-combineGroup = dbscanCentroid(data, AM_init);
+[combineGroup, objectCell, object] = dbscanCentroid(data, AM_init, deltaR, deltaAZI);
 figure(2);
 axis([0 100 0 100]);
 ylabel('距离/m');

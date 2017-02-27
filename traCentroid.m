@@ -1,7 +1,7 @@
 function combineGroup = traCentroid(data, AM_init)
 data = [data AM_init];
-resolutionR = 1;
-resolutionAzi = 1;
+resolutionR = 3;
+resolutionAzi = 3;
 deltafd = 4;
 deltaA = 30;
 disAxis = min(data(:,1)):resolutionR: max(data(:,1));
@@ -41,9 +41,17 @@ if length(angleAxis) > 1
             end
             if flag == 0
                 combineGroup = [combineGroup;  aziGroup2{i}(k,:)];
-                orginCombineGroup = [orginCombineGroup; orginGroup2{i}{k}];
+                orginCombineGroup = [orginCombineGroup orginGroup2{i}{k}];
             end
         end
     end
+end
+for i = 1:size(combineGroup, 1)
+    if(combineGroup(i, 5) == 0)
+        combineGroup(i, 5) = resolutionR;
+    end
+    if(combineGroup(i, 6) == 0)
+        combineGroup(i, 6) = resolutionAzi;
+    end    
 end
 end

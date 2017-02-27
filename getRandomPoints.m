@@ -11,7 +11,7 @@ aminit = [];
 aziradius = fix(radius/R*180/pi/2);
 for i = R - radius:deltaR: R + radius
     for j = AZI - aziradius:deltaAZI: AZI + aziradius
-        flag = 1;
+        flag = randi([0 1]);
         if flag == 1
             rinit = [rinit; i];
             aziinit = [aziinit; j];

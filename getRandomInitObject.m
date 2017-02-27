@@ -4,8 +4,8 @@
 %随机获得N个目标的若干个点迹
 function [R_init, AZI_init, V_init, AM_init, objectSizeinfo] = getRandomInitObject(objectNum, map_length, map_azi, deltaR, deltaAZI)
 vmin = 4;
-vmax = 10;
-ammin = 200;
+vmax = 20;
+ammin = 450;
 ammax = 500;
 R_init = []; %目标的初始距离
 AZI_init = [];%目标的初始方位

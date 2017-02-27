@@ -1,35 +1,9 @@
-%function [class, type] = traCentroid(data, resolutionR, resolutionAzi, deltafd, deltaA)
-%for test
-% data = [28    50    76    96;
-%     29    51    76    96;
-%     68    52    26    55;
-%     66    35    51    14;
-%     17    59    70    15;
-%     12    23    90    26];
-% [R_init, AZI_init, V_init, AM_init, objectSizeinfo] = getRandomInitObject(2, 100, 90, 1, 1);
-% data = [R_init AZI_init V_init AM_init];
-% plot(AZI_init,R_init, '*');
-% axis([0 100 0 100]);
-% ylabel('距离/m');
-% xlabel('方位角/度');
-
-% save config.mat
-clc
-clear
-close all;
-%load('config.mat');
-[R_init, AZI_init, V_init, AM_init, objectSizeinfo] = getRandomInitObject(6, 100, 90, 1, 1);
-data = [R_init AZI_init V_init AM_init];
+function combineGroup = traCentroid(data, AM_init)
+data = [data AM_init];
 resolutionR = 1;
 resolutionAzi = 1;
 deltafd = 4;
 deltaA = 30;
-figure(1)
-plot(AZI_init,R_init, '*');
-axis([0 100 0 100]);
-ylabel('距离/m');
-xlabel('方位角/度');
-%
 disAxis = min(data(:,1)):resolutionR: max(data(:,1));
 angleAxis = min(data(:,2)):resolutionAzi:max(data(:,2));
 aziGroup = cell(1, length(angleAxis)+1);
@@ -72,11 +46,4 @@ if length(angleAxis) > 1
         end
     end
 end
-figure(2)
-axis([0 100 0 100]);
-ylabel('距离/m');
-xlabel('方位角/度');
-for i = 1:size(combineGroup, 1)
-    rectangle('Position', [combineGroup(i,2) - combineGroup(i, 6)/2, combineGroup(i,1) - combineGroup(i, 5)/2, combineGroup(i, 6), combineGroup(i, 5)]);
-    hold on;
 end

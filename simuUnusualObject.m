@@ -1,10 +1,9 @@
 clc
 clear
 close all;
-%load('config.mat');
 deltaR = 1;
 deltaAZI = 1;
-[R_init, AZI_init, V_init, AM_init, objectSizeinfo] = getRandomInitObject(3, 100, 90,deltaR, deltaAZI);
+[R_init, AZI_init, V_init, AM_init, objectSizeinfo] = getUnusalInitObject(1, 100, 90,deltaR, deltaAZI);
 data = [R_init AZI_init V_init];
 % resolutionR = 1;
 % resolutionAzi = 1;

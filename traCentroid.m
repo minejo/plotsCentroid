@@ -1,7 +1,7 @@
 function combineGroup = traCentroid(data, AM_init)
 data = [data AM_init];
-resolutionR = 3;
-resolutionAzi = 3;
+resolutionR = 2;
+resolutionAzi = 2;
 deltafd = 4;
 deltaA = 30;
 disAxis = min(data(:,1)):resolutionR: max(data(:,1));
